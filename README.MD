@@ -55,7 +55,26 @@ The _very_ high level overview of Azure Kubernetes Service looks like this,
 
 5. ## 🔬 Testing the solution
 
-   - **Install Kubernetes Dashboad**
+   1. **Send Few Messages to Topic**
+
+      ```bash
+      #!/bin/bash
+
+      # Define the URL to be called
+      url="https://dlq-alert-store-backend-us-fn-app-002.azurewebsites.net/store-events-producer-fn"
+
+      # Define the number of times to make the curl call
+      n=100
+
+      # Use a for loop to make curl calls without waiting for response
+      for ((i=1; i<=$n; i++)); do
+         # Use the '&' at the end to run each curl command in the background
+         curl -s -o /dev/null -w "Request $i completed\n" "$url" &
+         echo "----------Request $i of $n sent----------"
+      done
+
+      echo "All requests sent"
+      ```
 
      Check Azure Monitor Portal and email
 
